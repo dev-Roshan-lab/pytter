@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chaquopy/chaquopy.dart';
+import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -38,32 +39,38 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text('PaiThorn'),
+      ),
+      body: Container(
+        padding: EdgeInsets.only(top: 10),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 height:MediaQuery.of(context).size.height*0.8,
                 width: MediaQuery.of(context).size.width,
                 child: ListView.builder(
-                  scrollDirection: Axis.vertical,
+                    physics: NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: cells+1,
                     itemBuilder: (BuildContext context, int index) {
                   if (index == cells) {
                     return Center(
                       child: SizedBox(
-                        width: 100,
                         height: 50,
                         child: Row(
-                          mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            RaisedButton(
-                              child: Text('New Cell'),
+                            TextButton(
+                              child: Text('New cell', style: TextStyle(color: Colors.white),),
+                              style: TextButton.styleFrom(
+                                backgroundColor: Colors.black
+                              ),
                               onPressed: () {
                                 setState(() {
                                   cells += 1;
@@ -72,10 +79,12 @@ class _HomePageState extends State<HomePage> {
                               },
                             ),
                             SizedBox(width: 20,),
-                            RaisedButton(
-                              child: Text('Delete'),
+                            TextButton(
+                              child: Text('Delete', style: TextStyle(color: Colors.white),),
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.black
+                              ),
                               onPressed: () {
-                                print("stop");
                                 setState(() {
                                   cells -= 1;
                                 });
@@ -88,20 +97,19 @@ class _HomePageState extends State<HomePage> {
                     );
                   } else {
                     return Card(
+                      color: Colors.black,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: Row(
                         children: [
                           Container(
-                            height: 70,
                             width: MediaQuery.of(context).size.width-60,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
-                              color: Colors.blueGrey[100]
+                              color: Colors.grey
                             ),
                             child: SizedBox(
-                              height: 100,
                               width: MediaQuery.of(context).size.width,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -110,21 +118,27 @@ class _HomePageState extends State<HomePage> {
                                   maxLines: null,
                                   controller: textEditingControllers[index],
                                   decoration: InputDecoration(
-                                    hintText: "Enter Code"
-                                  ),
+                                    hintText: "Enter Code",
+                                    enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                              ),
+                                  cursorColor: Colors.black,
                                 ),
                               ),
                             ),
                           ),
                           Container(
-                            height:70,
                             width: 50,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
-                              color: Colors.yellow[700],
+                              color: Colors.black,
                             ),
                             child: IconButton(
-                              icon: Icon(Icons.play_circle_fill),
+                              icon: Icon(Icons.play_circle_fill, color: Colors.white,),
                               onPressed: () async {
                                 final _result = await Chaquopy.executeCode(textEditingControllers[index].text);
                                 setState(() {
@@ -132,23 +146,6 @@ class _HomePageState extends State<HomePage> {
                                 });
                               },
                             )
-                            /*DropdownButton(
-                              icon: Icon(Icons.more_vert),
-                              items: [
-                                DropdownMenuItem(child: Text('Run'), onTap: () async {
-                                  final _result = await Chaquopy.executeCode(textEditingControllers[index].text);
-                                  setState(() {
-                                    output = _result.toString();
-                                  });
-                                }),
-                                DropdownMenuItem(child: Text('Clear'), onTap: () {textEditingControllers[index].clear();}),
-                                DropdownMenuItem(child: Text('Delete'), onTap: () {
-                                  setState(() {
-                                    cells -= 1;
-                                  });
-                                })
-                              ]
-                            )*/
                           )
                         ],
                       ),
@@ -156,20 +153,33 @@ class _HomePageState extends State<HomePage> {
                   }
                 }),
               ),
-              output == '' ? Container() : Container(
+              Container(
                 height: MediaQuery.of(context).size.height*0.2,
                 width: MediaQuery.of(context).size.width,
-                color: Colors.black,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, -2), // changes position of shadow
+                    ),
+                  ],
+                ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
-                      Text(
-                        'OUTPUT',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'OUTPUT',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold
+                          ),
                         ),
                       ),
                       Divider(height: 10,),
@@ -179,6 +189,16 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.white
                         ),
                       ),
+                      IconButton(
+                        icon: Icon(Icons.copy, color: Colors.white,),
+                        onPressed: () {
+                          Clipboard.setData(new ClipboardData(text: output));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Copied to clipboard'),
+                            backgroundColor: Colors.green,
+                          ));
+                        },
+                      )
                     ],
                   ),
                 ),
