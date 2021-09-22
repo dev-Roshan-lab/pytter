@@ -1,6 +1,6 @@
 # pyserve
 
-Since you don't your phone die, now turn it as a python webserver
+Google colab like python interpreter that runs offline with native experience 
 
 ## Getting Started
 
