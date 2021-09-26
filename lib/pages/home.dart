@@ -13,11 +13,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   int cells = 1;
-  List ditems = [
-    'Run',
-    'Share',
-    'Delete'
-  ];
   String output = '';
   List<TextEditingController> textEditingControllers = [];
 
