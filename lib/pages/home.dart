@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('PaiThorn'),
+        title: Text('Pytter'),
       ),
       body: Container(
         padding: EdgeInsets.only(top: 10),
