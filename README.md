@@ -1,4 +1,4 @@
-# pyserve
+# pytter
 
 Google colab like python interpreter that runs offline with native experience 
 
